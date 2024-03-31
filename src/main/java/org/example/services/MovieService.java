@@ -1,5 +1,10 @@
 package org.example.services;
 
+
+import java.util.ArrayList;
+
+public class MovieService {
+
 import org.example.DAO.BaseDAO;
 import org.example.DAO.MovieDAO;
 import org.example.DAO.MovieTypeDAO;
