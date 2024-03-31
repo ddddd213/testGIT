@@ -42,8 +42,8 @@ public interface BaseDAO<T> {
         Session session = null;
         try {
             session = HibernateUtils.getInstance().openSession();
-//            T t = session.get(cl, id);
-//            return t;
+            T t = session.get(cl, id);
+            return t;
         } finally {
             if (session != null) {
                 session.close();
@@ -58,24 +58,14 @@ public interface BaseDAO<T> {
      * @param entity The entity object with updated data.
      * @return The updated entity object.
      */
-    default T update(T entity){
-        Session session = null;
-        Transaction transaction = null;
-        try {
-            session = HibernateUtils.getInstance().openSession();
-            transaction = session.beginTransaction();
-            session.update(entity);
+    default T update(T entity) {
+        try (Session session = HibernateUtils.getInstance().openSession()) {
+            Transaction transaction = session.beginTransaction();
+            T updatedEntity = (T) session.merge(entity);
             transaction.commit();
-            return entity;
+            return updatedEntity;
         } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            throw e;
-        } finally {
-            if (session != null) {
-                session.close();
-            }
+            throw new RuntimeException("Error updating entity: " + e.getMessage(), e);
         }
     }
 
