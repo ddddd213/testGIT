@@ -42,12 +42,13 @@ public interface BaseDAO<T> {
         Session session = null;
         try {
             session = HibernateUtils.getInstance().openSession();
-            T t = session.get(cl, id);
-            return t;
+//            T t = session.get(cl, id);
+//            return t;
         } finally {
             if (session != null) {
                 session.close();
             }
+            System.out.println("Giang's commit");
         }
     }
 
@@ -122,6 +123,11 @@ public interface BaseDAO<T> {
                 session.close();
             }
         }
+    }
+    default void display1() {
+        System.out.println("Giangnvt1");
+        System.out.println("Thay đổi display 1 tại nhánh feature: 1");
+
     }
 
 
