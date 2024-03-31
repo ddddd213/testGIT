@@ -41,3 +41,4 @@ build/
 .idea/misc.xml
 .idea/jpa-buddy.xml
 .idea/misc.xml
+logs/app-xml.log
