@@ -83,7 +83,7 @@ public interface BaseDAO<T> {
      *
      * @param id The ID of the entity to be deleted, class entity.
      */
-    default void delete(String id,Class<T> cl ){
+    default void deleteByID(String id,Class<T> cl ){
         Session session = null;
         Transaction transaction = null;
         try {
@@ -91,6 +91,30 @@ public interface BaseDAO<T> {
             transaction = session.beginTransaction();
 
             T entity = session.get(cl, id);
+            if (entity != null) {
+                session.delete(entity);
+            }
+
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            throw e;
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+    }
+    default void deleteByName(String name,Class<T> cl ){
+        Session session = null;
+        Transaction transaction = null;
+        try {
+            session = HibernateUtils.getInstance().openSession();
+            transaction = session.beginTransaction();
+
+            T entity = getByName(name,cl);
             if (entity != null) {
                 session.delete(entity);
             }
