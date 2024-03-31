@@ -12,6 +12,8 @@ import java.util.List;
 @RequiredArgsConstructor
 @NoArgsConstructor
 @Table(name = "MOVIE")
+@AllArgsConstructor
+@Builder
 public class Movie {
 
     @Id

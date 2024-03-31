@@ -23,7 +23,7 @@ public class MovieDAO implements BaseDAO<Movie> {
             CriteriaBuilder builder = session.getCriteriaBuilder();
             CriteriaQuery<Movie> criteriaQuery = builder.createQuery(Movie.class);
             Root<Movie> root = criteriaQuery.from(Movie.class);
-            criteriaQuery.select(root);
+            criteriaQuery.select(root).orderBy(builder.asc(root.get("id")));
 
             // Execute query with pagination
             Query<Movie> query = session.createQuery(criteriaQuery);
