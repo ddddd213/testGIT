@@ -6,8 +6,9 @@ import jakarta.persistence.criteria.Root;
 import org.example.entities.Movie;
 import org.example.utils.HibernateUtils;
 import org.hibernate.Session;
-import org.hibernate.mapping.List;
 import org.hibernate.query.Query;
+
+import java.util.List;
 
 public class MovieDAO implements BaseDAO<Movie> {
 
