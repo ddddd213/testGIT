@@ -8,22 +8,23 @@ import org.example.utils.HibernateUtils;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
-
+import java.util.List;
 
 public class MovieDAO implements BaseDAO<Movie> {
-
-    public boolean ifExistedByNameEng(String nameEng){
+    public List<Movie> getMoviesByCompany(String company) {
         Session session = null;
-        try{
+        try {
             session = HibernateUtils.getInstance().openSession();
-            Query query = session.createNativeQuery("SELECT * FROM Movie m WHERE m.name_eng= :nameEng ", Movie.class);
-            query.setParameter("nameEng", nameEng);
-            Movie movie = (Movie) query.getSingleResult();
-            return (movie!=null);
+            String hql = "FROM Movie m WHERE m.movieProductionCompany = :company";
+            Query<Movie> query = session.createQuery(hql, Movie.class);
+            query.setParameter("company", company);
+            return query.list();
         } finally {
-            if(session!=null){
+            if (session != null) {
                 session.close();
             }
+
+
 
         }
     }
