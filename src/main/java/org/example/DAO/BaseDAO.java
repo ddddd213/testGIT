@@ -151,15 +151,8 @@ public interface BaseDAO<T> {
     }
 
     default T getByID(Class<T> cl, String id) {
-        Session session = null;
-        try {
-            session = HibernateUtils.getInstance().openSession();
-            T t = session.get(cl, id);
-            return t;
-        } finally {
-            if (session != null) {
-                session.close();
-            }
+        try (Session session = HibernateUtils.getInstance().openSession()) {
+            return session.get(cl, id);
         }
     }
     default void display1() {
