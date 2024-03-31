@@ -130,5 +130,31 @@ public interface BaseDAO<T> {
 
     }
 
+    //create deleteById
+    default void deleteById(String id,Class<T> cl ){
+        Session session = null;
+        Transaction transaction = null;
+        try {
+            session = HibernateUtils.getInstance().openSession();
+            transaction = session.beginTransaction();
+
+            T entity = session.get(cl, id);
+            if (entity != null) {
+                session.delete(entity);
+            }
+
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            throw e;
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+    }
+
 
 }
