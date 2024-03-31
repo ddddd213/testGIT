@@ -2,6 +2,7 @@ package org.example.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.apache.logging.log4j.core.config.plugins.validation.constraints.NotBlank;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -54,11 +55,11 @@ public class Movie {
     private String version;
 
     @Column(name = "MOVIE_NAME_ENG", nullable = false, unique = true)
-    @NonNull
+    @NotBlank
     private String movieNameEng;
 
     @Column(name = "MOVIE_NAME_VN", nullable = false, unique = true)
-    @NonNull
+    @NotBlank
     private String movieNameVn;
 
     @Column(name = "LARGE_IMAGE", nullable = false)
