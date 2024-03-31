@@ -48,7 +48,6 @@ public interface BaseDAO<T> {
             if (session != null) {
                 session.close();
             }
-            System.out.println("Giang's commit");
         }
     }
 
@@ -102,6 +101,32 @@ public interface BaseDAO<T> {
                 transaction.rollback();
             }
             throw e;
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+    }
+    default T getByName(String name, Class<T> cl) {
+        Session session = null;
+        try {
+            session = HibernateUtils.getInstance().openSession();
+            Query<T> query = session.createQuery("FROM " + cl.getSimpleName() + " WHERE name = :name", cl);
+            query.setParameter("name", name);
+            return query.uniqueResult();
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+    }
+    default T getByID(String id, Class<T> cl) {
+        Session session = null;
+        try {
+            session = HibernateUtils.getInstance().openSession();
+            Query<T> query = session.createQuery("FROM " + cl.getSimpleName() + " WHERE id = :id", cl);
+            query.setParameter("id", id);
+            return query.uniqueResult();
         } finally {
             if (session != null) {
                 session.close();
