@@ -13,12 +13,12 @@ import org.hibernate.query.Query;
 
 public class MovieDAO implements BaseDAO<Movie> {
 
-    public boolean ifExistedByNameEng(String nameEng){
+    public boolean ifExistedByNameVn(String nameVn){
         Session session = null;
         try{
             session = HibernateUtils.getInstance().openSession();
-            Query query = session.createNativeQuery("SELECT * FROM Movie m WHERE m.name_eng= :nameEng ", Movie.class);
-            query.setParameter("nameEng", nameEng);
+            Query query = session.createNativeQuery("SELECT * FROM Movie m WHERE m.name_vn= :nameVn ", Movie.class);
+            query.setParameter("nameEng", nameVn);
             Movie movie = (Movie) query.getSingleResult();
             return (movie!=null);
         } finally {
