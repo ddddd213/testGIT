@@ -13,10 +13,10 @@ public class MovieTypeDAO implements BaseDAO<MovieType> {
     private final MovieDAO movieDAO;
     private final TypeDAO typeDAO;
 
-    public MovieTypeDAO(HibernateUtils hibernateUtils, MovieDAO movieDao, TypeDAO typeDao){
-        this.hibernateUtils = hibernateUtils;
-        this.movieDAO = movieDao;
-        this.typeDAO = typeDao;
+    public MovieTypeDAO(){
+        this.hibernateUtils =  HibernateUtils.getInstance();
+        this.movieDAO = new MovieDAO();
+        this.typeDAO = new TypeDAO();
     }
 
     public List<MovieType> getAll(){
