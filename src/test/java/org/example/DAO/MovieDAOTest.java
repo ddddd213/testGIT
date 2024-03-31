@@ -3,11 +3,15 @@ package org.example.DAO;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.example.entities.Movie;
+import org.example.utils.HibernateUtils;
+import org.hibernate.Session;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -55,6 +59,15 @@ class MovieDAOTest {
 
     }
 
+    @AfterEach
+    public void afterEach() {
+        try (Session session = HibernateUtils.getInstance().openSession()) {
+            session.beginTransaction();
+            session.createMutationQuery("DELETE FROM Movie").executeUpdate();
+            session.getTransaction().commit();
+        }
+    }
+
     @Test
     void testCreate() {
         assertTrue(movieDAO.create(movie1));
@@ -91,4 +104,40 @@ class MovieDAOTest {
         assertEquals(insertedMovie.getSmallImage(), updatedMovie.getSmallImage());
     }
 
+    @Test
+    public void testGetMovies() {
+        // prepare data
+        Movie movie3 = Movie.builder()
+                .actor("Timothée Chalamet, Zendaya, Rebecca Ferguson, Javier Bardem")
+                .content("Paul Atreides unites with Chani and the Fremen while seeking revenge against the conspirators who destroyed his family.")
+                .director("Denis Villeneuve")
+                .duration(166)
+                .movieNameEng("Dune: Part Two")
+                .movieNameVn("Hành Tinh Cát: Phần 2")
+                .smallImage("https://www.imdb.com/title/tt15239678/mediaviewer/rm4259595777/?ref_=tt_ov_i")
+                .build();
+
+        Movie movie4 = Movie.builder()
+                .actor("Rebecca Hall, Brian Tyree Henry, Dan Stevens, Kaylee Hottle")
+                .content("Two ancient titans, Godzilla and Kong, clash in an epic battle as humans unravel their intertwined origins and connection to Skull Island's mysteries.")
+                .director("Adam Wingard")
+                .duration(115)
+                .movieNameEng("Godzilla x Kong: The New Empire")
+                .movieNameVn("Godzilla x Kong: Đế Chế Mới")
+                .smallImage("https://www.imdb.com/title/tt14539740/mediaviewer/rm2293972993/?ref_=tt_ov_i")
+                .build();
+
+        movieDAO.create(movie1);
+        movieDAO.create(movie2);
+
+        // Test pagination
+        List<Movie> movies = movieDAO.getMovies(1, 2);
+
+        // Assert result
+        assertEquals(2, movies.size());
+        // check movie1 in list
+        assertNotNull(movies.stream().filter(movie -> movie.getId().equals(movie1.getId())).findFirst().orElse(null));
+        // check movie2 in list
+        assertNotNull(movies.stream().filter(movie -> movie.getId().equals(movie2.getId())).findFirst().orElse(null));
+    }
 }

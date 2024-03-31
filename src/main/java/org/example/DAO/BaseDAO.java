@@ -41,8 +41,8 @@ public interface BaseDAO<T> {
         Session session = null;
         try {
             session = HibernateUtils.getInstance().openSession();
-//            T t = session.get(cl, id);
-//            return t;
+            T t = session.get(cl, id);
+            return t;
         } finally {
             if (session != null) {
                 session.close();
