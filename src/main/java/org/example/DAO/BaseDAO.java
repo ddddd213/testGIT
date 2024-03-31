@@ -127,6 +127,7 @@ public interface BaseDAO<T> {
     default void display1() {
         System.out.println("Giangnvt1");
         System.out.println("Thay đổi display 1 tại nhánh feature: 1");
+
     }
 
 
