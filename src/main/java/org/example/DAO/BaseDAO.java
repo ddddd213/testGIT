@@ -124,6 +124,19 @@ public interface BaseDAO<T> {
             }
         }
     }
+
+    default T getByID(Class<T> cl, String id) {
+        Session session = null;
+        try {
+            session = HibernateUtils.getInstance().openSession();
+            T t = session.get(cl, id);
+            return t;
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+    }
     default void display1() {
         System.out.println("Giangnvt1");
         System.out.println("Thay đổi display 1 tại nhánh feature: 1");
