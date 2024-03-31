@@ -13,10 +13,10 @@ public class MovieTypeDAO implements BaseDAO<MovieType> {
     private final MovieDAO movieDAO;
     private final TypeDAO typeDAO;
 
-    public MovieTypeDAO(HibernateUtils hibernateUtils, MovieDAO movieDao, TypeDAO typeDao){
-        this.hibernateUtils = hibernateUtils;
-        this.movieDAO = movieDao;
-        this.typeDAO = typeDao;
+    public MovieTypeDAO(){
+        this.hibernateUtils =  HibernateUtils.getInstance();
+        this.movieDAO = new MovieDAO();
+        this.typeDAO = new TypeDAO();
     }
 
     public List<MovieType> getAll(){
@@ -70,6 +70,21 @@ public class MovieTypeDAO implements BaseDAO<MovieType> {
         } catch(Exception e){
 
             return false;
+
+        }
+    }
+    public List<MovieType> getMovieTypeByTypeId(int typeId) {
+        Session session = null;
+        try {
+            session = HibernateUtils.getInstance().openSession();
+            String hql = "from MovieType where id = :typeId";
+            return session.createQuery(hql, MovieType.class)
+                    .setParameter("typeId", typeId)
+                    .list();
+        } finally {
+            if (session != null) {
+                session.close();
+            }
         }
     }
 }

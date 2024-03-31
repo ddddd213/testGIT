@@ -11,6 +11,8 @@ import org.hibernate.query.Query;
 import java.util.List;
 
 public class MovieDAO implements BaseDAO<Movie> {
+    public MovieDAO() {
+    }
 
     public boolean ifExistedByNameVn(String nameVn){
         Session session = null;
