@@ -14,7 +14,7 @@ public interface BaseDAO<T> {
      * @param entity The entity object to be created.
      * @return The created entity object with its ID (if applicable).
      */
-    default boolean create(T entity){
+    default boolean create(T entity) {
         Session session = null;
         Transaction transaction = null;
         try {
@@ -23,11 +23,10 @@ public interface BaseDAO<T> {
             session.persist(entity);
             session.getTransaction().commit();
             return true;
-        } catch (Exception e){
+        } catch (Exception e) {
             return false;
-        }
-        finally {
-            if(session != null)
+        } finally {
+            if (session != null)
                 session.close();
         }
     }
@@ -38,7 +37,7 @@ public interface BaseDAO<T> {
      * @param id The ID of the entity to be retrieved.
      * @return The entity object with the specified ID, or null if not found.
      */
-    default T read(Class<T> cl, String id){
+    default T read(Class<T> cl, String id) {
         Session session = null;
         try {
             session = HibernateUtils.getInstance().openSession();
@@ -58,7 +57,7 @@ public interface BaseDAO<T> {
      * @param entity The entity object with updated data.
      * @return The updated entity object.
      */
-    default T update(T entity){
+    default T update(T entity) {
         Session session = null;
         Transaction transaction = null;
         try {
@@ -84,7 +83,7 @@ public interface BaseDAO<T> {
      *
      * @param id The ID of the entity to be deleted, class entity.
      */
-    default void delete(String id,Class<T> cl ){
+    default void delete(String id, Class<T> cl) {
         Session session = null;
         Transaction transaction = null;
         try {
@@ -124,10 +123,37 @@ public interface BaseDAO<T> {
             }
         }
     }
+
     default void display1() {
         System.out.println("Giangnvt1");
         System.out.println("Thay đổi display 1 tại nhánh feature: 1");
 
+    }
+
+    // create deleteByID
+    default void deleteByID(String id, Class<T> cl) {
+        Session session = null;
+        Transaction transaction = null;
+        try {
+            session = HibernateUtils.getInstance().openSession();
+            transaction = session.beginTransaction();
+
+            T entity = session.get(cl, id);
+            if (entity != null) {
+                session.delete(entity);
+            }
+
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            throw e;
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
     }
 
 
