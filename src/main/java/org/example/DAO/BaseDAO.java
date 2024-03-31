@@ -124,6 +124,9 @@ public interface BaseDAO<T> {
             }
         }
     }
+    default void display1() {
+        System.out.println("Giangnvt1");
+    }
 
 
 }
