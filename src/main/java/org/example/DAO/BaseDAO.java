@@ -48,7 +48,6 @@ public interface BaseDAO<T> {
             if (session != null) {
                 session.close();
             }
-            System.out.println("Giang's commit");
         }
     }
 
@@ -74,7 +73,7 @@ public interface BaseDAO<T> {
      *
      * @param id The ID of the entity to be deleted, class entity.
      */
-    default void delete(String id,Class<T> cl ){
+    default void deleteByID(String id,Class<T> cl ){
         Session session = null;
         Transaction transaction = null;
         try {
@@ -98,6 +97,56 @@ public interface BaseDAO<T> {
             }
         }
     }
+    default void deleteByName(String name,Class<T> cl ){
+        Session session = null;
+        Transaction transaction = null;
+        try {
+            session = HibernateUtils.getInstance().openSession();
+            transaction = session.beginTransaction();
+
+            T entity = getByName(name,cl);
+            if (entity != null) {
+                session.delete(entity);
+            }
+
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            throw e;
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+    }
+    default T getByName(String name, Class<T> cl) {
+        Session session = null;
+        try {
+            session = HibernateUtils.getInstance().openSession();
+            Query<T> query = session.createQuery("FROM " + cl.getSimpleName() + " WHERE name = :name", cl);
+            query.setParameter("name", name);
+            return query.uniqueResult();
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+    }
+    default T getByID(String id, Class<T> cl) {
+        Session session = null;
+        try {
+            session = HibernateUtils.getInstance().openSession();
+            Query<T> query = session.createQuery("FROM " + cl.getSimpleName() + " WHERE id = :id", cl);
+            query.setParameter("id", id);
+            return query.uniqueResult();
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+    }
 
     /**
      * read all an entity of type T from the database .
@@ -112,6 +161,12 @@ public interface BaseDAO<T> {
             if (session != null) {
                 session.close();
             }
+        }
+    }
+
+    default T getByID(Class<T> cl, String id) {
+        try (Session session = HibernateUtils.getInstance().openSession()) {
+            return session.get(cl, id);
         }
     }
     default void display1() {
