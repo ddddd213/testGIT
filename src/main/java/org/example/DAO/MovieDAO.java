@@ -8,29 +8,22 @@ import org.example.utils.HibernateUtils;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
-import java.util.List;
+
 
 public class MovieDAO implements BaseDAO<Movie> {
-    /**
-     * Retrieves a paginated list of entities from the database.
-     * @param pageNumber - The page number of the results to retrieve
-     * @param pageSize - The maximum number of entities per page
-     * @return A list of entities retrieved from the database
-     */
-    public List<Movie> getMovies(int pageNumber, int pageSize) {
-        try (Session session = HibernateUtils.getInstance().openSession()) {
-            // Create CriteriaBuilder
-            CriteriaBuilder builder = session.getCriteriaBuilder();
-            CriteriaQuery<Movie> criteriaQuery = builder.createQuery(Movie.class);
-            Root<Movie> root = criteriaQuery.from(Movie.class);
-            criteriaQuery.select(root).orderBy(builder.asc(root.get("id")));
 
-            // Execute query with pagination
-            Query<Movie> query = session.createQuery(criteriaQuery);
-            query.setFirstResult((pageNumber - 1) * pageSize);
-            query.setMaxResults(pageSize);
-            List<Movie> movies = query.getResultList();
-
+    public boolean ifExistedByNameEng(String nameEng){
+        Session session = null;
+        try{
+            session = HibernateUtils.getInstance().openSession();
+            Query query = session.createNativeQuery("SELECT * FROM Movie m WHERE m.name_eng= :nameEng ", Movie.class);
+            query.setParameter("nameEng", nameEng);
+            Movie movie = (Movie) query.getSingleResult();
+            return (movie!=null);
+        } finally {
+            if(session!=null){
+                session.close();
+            }
 
         }
     }
