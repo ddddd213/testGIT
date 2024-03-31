@@ -31,7 +31,7 @@ public class MovieDAO implements BaseDAO<Movie> {
             query.setMaxResults(pageSize);
             List<Movie> movies = query.getResultList();
 
-            return movies;
+
         }
     }
 }
