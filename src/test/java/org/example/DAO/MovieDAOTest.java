@@ -89,21 +89,25 @@ class MovieDAOTest {
 
     @Test
     void testUpdate() {
-        movieDAO.create(movie1);
-
+        // Lấy dữ liệu đã tạo
         Movie insertedMovie = movieDAO.read(Movie.class, movie1.getId());
+
+        // Thay đổi thông tin phim
         insertedMovie.setMovieNameVn("Tuan cui");
         insertedMovie.setSmallImage("new link");
 
+        // Cập nhật dữ liệu trong cơ sở dữ liệu
         movieDAO.update(insertedMovie);
 
+        // Đọc lại dữ liệu sau khi cập nhật
         Movie updatedMovie = movieDAO.read(Movie.class, insertedMovie.getId());
+
+        // Kiểm tra rằng dữ liệu đã được cập nhật đúng
         assertNotNull(updatedMovie);
         assertEquals(insertedMovie.getId(), updatedMovie.getId());
         assertEquals(insertedMovie.getMovieNameVn(), updatedMovie.getMovieNameVn());
         assertEquals(insertedMovie.getSmallImage(), updatedMovie.getSmallImage());
     }
-
     @Test
     public void testGetMovies() {
         // prepare data
