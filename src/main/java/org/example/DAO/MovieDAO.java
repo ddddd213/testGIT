@@ -1,5 +1,8 @@
 package org.example.DAO;
 
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
 import org.example.entities.Movie;
 import org.example.utils.HibernateUtils;
 import org.hibernate.Session;
@@ -20,6 +23,9 @@ public class MovieDAO implements BaseDAO<Movie> {
             if (session != null) {
                 session.close();
             }
+
+
+
         }
     }
 }
