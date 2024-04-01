@@ -27,7 +27,20 @@ public class MovieDAO implements BaseDAO<Movie> {
       }
     }
   }
-
+  public List<Movie> getMoviesByCompany(String company) {
+    Session session = null;
+    try {
+      session = HibernateUtils.getInstance().openSession();
+      String hql = "FROM Movie m WHERE m.movieProductionCompany = :company";
+      Query<Movie> query = session.createQuery(hql, Movie.class);
+      query.setParameter("company", company);
+      return query.list();
+    } finally {
+      if (session != null) {
+        session.close();
+      }
+    }
+  }
   public List<Movie> findMovieByName(String movieName) {
     Session session = null;
     try {
