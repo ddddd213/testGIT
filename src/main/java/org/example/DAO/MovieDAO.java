@@ -67,4 +67,20 @@ public class MovieDAO implements BaseDAO<Movie> {
       return movies;
     }
   }
+  
+  // find Movie with name
+    public Movie findMovieByName(String name) {
+        Session session = null;
+        try {
+        session = HibernateUtils.getInstance().openSession();
+        Query<Movie> query =
+            session.createQuery("FROM Movie m WHERE m.name = :name", Movie.class);
+        query.setParameter("name", name);
+        return query.uniqueResult();
+        } finally {
+        if (session != null) {
+            session.close();
+        }
+        }
+    }
 }
