@@ -1,9 +1,8 @@
 package org.example.entities;
 
 import jakarta.persistence.*;
-import java.util.List;
-
 import jakarta.validation.constraints.Size;
+import java.util.List;
 import lombok.*;
 import org.apache.logging.log4j.core.config.plugins.validation.constraints.NotBlank;
 
