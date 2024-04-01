@@ -34,4 +34,12 @@ public class MovieService {
         movieType -> movies.add(movieDAO.read(Movie.class, movieType.getMovie().getId())));
     return movies;
   }
+  public List<Movie> getMoviesByCompany(String company) {
+    List<Movie> movies = movieDAO.getMoviesByCompany(company);
+    if(movies == null){
+      System.out.println("There is no movie produced by this company");
+      return null;
+    }
+    return movies;
+  }
 }
