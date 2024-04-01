@@ -1,4 +1,3 @@
 package org.example.services;
 
-public class TypeService {
-}
+public class TypeService {}

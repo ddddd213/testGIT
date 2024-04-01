@@ -1,10 +1,10 @@
 package org.example.entities;
 
 import jakarta.persistence.*;
-import lombok.*;
-
 import java.time.LocalDate;
 import java.util.List;
+import lombok.*;
+import org.apache.logging.log4j.core.config.plugins.validation.constraints.NotBlank;
 
 @Entity
 @Getter
@@ -16,59 +16,60 @@ import java.util.List;
 @Builder
 public class Movie {
 
-    @Id
-    @Column(name = "MOVIE_ID", unique = true, nullable = false, length = 10)
-    @NonNull
-    private String id;
+  @Column(name = "LARGE_IMAGE", nullable = false)
+  @NonNull
+  private String largeImage;
 
-    @Column(name = "ACTOR", nullable = false)
-    @NonNull
-    private String actor;
+  @Id
+  @Column(name = "MOVIE_ID", unique = true, nullable = false, length = 10)
+  @NonNull
+  private String id;
 
-    @Column(name = "CONTENT", nullable = false, length = 1000)
-    @NonNull
-    private String content;
+  @Column(name = "ACTOR", nullable = false)
+  @NonNull
+  private String actor;
 
-    @Column(name = "DIRECTOR", nullable = false)
-    @NonNull
-    private String director;
+  @Column(name = "CONTENT", nullable = false, length = 1000)
+  @NonNull
+  private String content;
 
-    @Column(name = "DURATION", nullable = false)
-    @NonNull
-    private double duration;
+  @Column(name = "DIRECTOR", nullable = false)
+  @NonNull
+  private String director;
 
-    @Column(name = "FROM_DATE", nullable = false)
-    @NonNull
-    private LocalDate fromDate;
+  @Column(name = "DURATION", nullable = false)
+  @NonNull
+  private Double duration;
 
-    @Column(name = "TO_DATE", nullable = false)
-    @NonNull
-    private LocalDate toDate;
+  @Column(name = "FROM_DATE", nullable = false)
+  @NonNull
+  private LocalDate fromDate;
 
-    @Column(name = "MOVIE_PRODUCTION_COMPANY", nullable = false)
-    @NonNull
-    private String movieProductionCompany;
+  @Column(name = "TO_DATE", nullable = false)
+  @NonNull
+  private LocalDate toDate;
 
-    @Column(name = "VERSION", nullable = false)
-    @NonNull
-    private String version;
+  @Column(name = "MOVIE_PRODUCTION_COMPANY", nullable = false)
+  @NonNull
+  private String movieProductionCompany;
 
-    @Column(name = "MOVIE_NAME_ENG", nullable = false, unique = true)
-    @NonNull
-    private String movieNameEng;
+  @NotBlank
+  @Column(name = "VERSION", nullable = false)
+  @NonNull
+  private String version;
 
-    @Column(name = "MOVIE_NAME_VN", nullable = false, unique = true)
-    @NonNull
-    private String movieNameVn;
+  @Column(name = "MOVIE_NAME_ENG", nullable = false, unique = true)
+  @NonNull
+  private String movieNameEng;
 
-    @Column(name = "LARGE_IMAGE", nullable = false)
-    @NonNull
-    private String largeImage;
+  @Column(name = "MOVIE_NAME_VN", nullable = false, unique = true)
+  @NonNull
+  private String movieNameVn;
 
-    @Column(name = "SMALL_IMAGE", nullable = false)
-    @NonNull
-    private String smallImage;
+  @Column(name = "SMALL_IMAGE", nullable = false)
+  @NonNull
+  private String smallImage;
 
-    @OneToMany(mappedBy = "movie", fetch = FetchType.LAZY)
-    private List<MovieType> movieTypeList;
+  @OneToMany(mappedBy = "movie", fetch = FetchType.LAZY)
+  private List<MovieType> movieTypeList;
 }
